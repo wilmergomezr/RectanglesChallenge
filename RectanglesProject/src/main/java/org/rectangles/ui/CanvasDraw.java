@@ -1,12 +1,18 @@
 package org.rectangles.ui;
 
+import org.rectangles.entities.Line;
 import org.rectangles.entities.Point;
 import org.rectangles.entities.Rectangle;
+import org.rectangles.operations.RectangleAdjacency;
+import org.rectangles.operations.RectangleContainment;
+import org.rectangles.operations.RectangleIntersection;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
+import java.util.Optional;
 
 public class CanvasDraw extends JPanel {
 
@@ -15,6 +21,7 @@ public class CanvasDraw extends JPanel {
     public Point endPoint;
     private Rectangle recA;
     private Rectangle recB;
+    private List<Line> drawLines;
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -32,6 +39,14 @@ public class CanvasDraw extends JPanel {
         if(startPoint!=null){
             g.setColor(Color.RED);
             g.drawRect(startPoint.getX(), startPoint.getY(), 1, 1);
+        }
+
+        if(drawLines!= null){
+            g.setColor(Color.GREEN);
+            for (Line line : drawLines){
+                //System.out.println("Drawing line: " + line.toString());
+                g.drawLine(line.getStartPoint().getX(), line.getStartPoint().getY(), line.getEndPoint().getX(), line.getEndPoint().getY());
+            }
         }
     }
 
@@ -82,16 +97,28 @@ public class CanvasDraw extends JPanel {
                 endPoint.getX() - startPoint.getX(), endPoint.getY() - startPoint.getY());
 
         temp = validateAndFix(temp);
+        Optional<List<Line>> lines = Optional.empty();
 
         if(recA == null){
             recA = temp;
         } else if(recB == null){
             recB = temp;
+            lines = (new RectangleIntersection()).getInterceptedLines(recA, recB, false);
+            System.out.println("Containment Validation Result: " + (new RectangleContainment()).validate(recA, recB));
+            System.out.println("Adjacency Validation Result: " + (new RectangleAdjacency()).validate(recA, recB));
         } else {
             recA = recB;
             recB = temp;
+            lines = (new RectangleIntersection()).getInterceptedLines(recA, recB, false);
+            System.out.println("Containment Validation Result: " + (new RectangleContainment()).validate(recA, recB));
+            System.out.println("Adjacency Validation Result: " + (new RectangleAdjacency()).validate(recA, recB));
         }
         System.out.println(temp.toString());
+        if(!lines.isEmpty()) {
+            drawLines =lines.get();
+        }else{
+            drawLines = null;
+        }
     }
 
     private Rectangle validateAndFix(Rectangle r){
