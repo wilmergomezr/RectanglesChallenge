@@ -6,7 +6,7 @@ E-Mail: wilmer.gomezr@gmail.com
 
 ## Problem Description
 
-![Problem](RectanglesProgrammingSample.pdf)
+[Problem description](files/RectanglesProgrammingSample.pdf)
 
 Is required to create 3 algorithm that let us evaluate rectangles. The three validations required are intersection, containment and adjacency.
 
@@ -38,21 +38,26 @@ Is used for validations and to return the intercepting points on the intersectio
 
 For all the implementation we assume that all the rectangles are in the positive side of the imaginary plane. 
 
+```java
     public class Point {
          private int x;
          private int y;
+```
 
 #### Line
 A basic line implementation that consists in two points, a start and an end point. is used for almost all the algorithm implemented in this solution.
 
+```java
     public class Line {
         private Point startPoint;
         private Point endPoint; 
+```
 
 #### Rectangle
 The main entity, is based on a start point, and its respective Width and height.
 One consideration that we do in the pre-processing is that the start point of the rectangle has to be the top left corner. For this I implemented a validation that fix the rectangle if a negative values is sent.   
 
+```java
     private Rectangle validateAndFix(Rectangle r){
         if(r.getHeight() < 0){
             r.setY( r.getY() + r.getHeight());
@@ -64,14 +69,17 @@ One consideration that we do in the pre-processing is that the start point of th
         }
         return r;
     }
+```
     
 And the rectangle entity looks like this
 
+```java
     public class Rectangle {
         private int x;
         private int y;
         private int width;
         private int height;
+```
 
 ### Intersection
 On this algorithm the approach taken was to split the rectangle on its border lines. 
@@ -79,6 +87,7 @@ And compare the vertical lines of one rectangle, against the horizontals of the 
 
 Part of this validation is
 
+```java
     for (Line lineV : breakRectangleVertical(rectangle1)){
         for(Line lineH : breakRectangleHorizontal(rectangle2)){
             if(isLineInterception(lineH, lineV)){
@@ -86,18 +95,21 @@ Part of this validation is
             }
         }
     }
+```
 
 ### Containment
 For this implementation I calculate a diagonal of the rectangles and if the extreme points of this line is inside the other rectangle, then the rectangle is contained.
 
 part of the implementation is
 
+```java
     Line rectangleDiagonal = new Line(rectangle2.getX(), rectangle2.getY(), 
                 rectangle2.getX() + rectangle2.getWidth(), rectangle2.getY() + rectangle2.getHeight());
     if(isLineInside(rectangle1, rectangleDiagonal)){
         System.out.println("Is inside: " + rectangleDiagonal.toString());
         return true;
     }
+```
 
 ### Adjacency
 
@@ -110,6 +122,7 @@ And if they are not in contact I returned "Not Adjacent"
 
 This is the method with the validations for each type of adjacency
 
+```java
     private String areAdjacent(Line leftRectangleFace, Line rightRectangleFace){
         if(leftRectangleFace.getStartPoint().getX() == rightRectangleFace.getStartPoint().getX()){
             if(leftRectangleFace.getStartPoint().getY() == rightRectangleFace.getStartPoint().getY() &&
@@ -125,6 +138,7 @@ This is the method with the validations for each type of adjacency
         }
         return ValidationResult.NOT_ADJACENT.getValue();
     }
+```
 
 ###Tools
  * Gradle
@@ -149,21 +163,21 @@ After successfully build the project, run the Application task with gradle
 
 On this GUI you are able to draw rectangles, with your first click you define the start point of the rectangle, on the screen you will see a red dot representing this.
 
-![First Click](files/firstClick.png)
+![First Click](files/firstClick.PNG)
 
 The next click will define the width and height of the rectangle, and it'll be drawn on the screen.
 
-![Second Click](files/secondClick.png)
+![Second Click](files/secondClick.PNG)
 
 There will only be two rectangles on the screen at the same time, so the last to rectangles drawn will remain, and any older than those will be removed.
 when a second rectangle is drawn, all the validations are executed and the results gets showed on the screen
 
-![Two Rectangles](files/twoRectangles.png)
-![Validations](files/twoRectangles2.png)
+![Two Rectangles](files/twoRectangles.PNG)
+![Validations](files/twoRectangles2.PNG)
 
 For the intersections there is and extra visual indication, were we will be able to see the intersection points as blue dots.
 
-![Validations](files/Intersection.png) 
+![Validations](files/Intersection.PNG) 
 
 ## Testing
 ### Unit Tests
@@ -179,4 +193,4 @@ the excluded packages were:
 
 I added jacoco to validate the test coverage, in this case I get 100% of test coverage and 96% on the branches, as shown in the screenshot below.
 
-![Coverage](files/jacoco.png)
+![Coverage](files/jacoco.PNG)
