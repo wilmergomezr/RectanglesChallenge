@@ -17,16 +17,16 @@ public class RectangleContainment extends RectangleValidationAlgorithm{
         return ValidationResult.NO_CONTAINMENT.getValue();
     }
 
-    private boolean isContainmentRectangle(Rectangle r1, Rectangle r2){
+    private boolean isContainmentRectangle(Rectangle rectangle1, Rectangle rectangle2){
 
-        Line rectangleDiagonal = new Line(r2.getX(), r2.getY(), r2.getX() + r2.getWidth(), r2.getY() + r2.getHeight());
-        if(isLineInside(r1, rectangleDiagonal)){
+        Line rectangleDiagonal = new Line(rectangle2.getX(), rectangle2.getY(), rectangle2.getX() + rectangle2.getWidth(), rectangle2.getY() + rectangle2.getHeight());
+        if(isLineInside(rectangle1, rectangleDiagonal)){
             System.out.println("Is inside: " + rectangleDiagonal.toString());
             return true;
         }
 
-        rectangleDiagonal = new Line(r1.getX(), r1.getY(), r1.getX() + r1.getWidth(), r1.getY() + r1.getHeight());
-        if(isLineInside(r2, rectangleDiagonal)){
+        rectangleDiagonal = new Line(rectangle1.getX(), rectangle1.getY(), rectangle1.getX() + rectangle1.getWidth(), rectangle1.getY() + rectangle1.getHeight());
+        if(isLineInside(rectangle2, rectangleDiagonal)){
             System.out.println("Is inside: " + rectangleDiagonal.toString());
             return true;
         }

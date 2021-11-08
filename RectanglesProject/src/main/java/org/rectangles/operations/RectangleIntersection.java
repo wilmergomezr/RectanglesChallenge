@@ -21,19 +21,28 @@ public class RectangleIntersection extends RectangleValidationAlgorithm{
         return ValidationResult.NO_INTERSECTION.getValue();
     }
 
-    public Optional<List<Point>> getInterceptionPoints(Rectangle r1, Rectangle r2){
+    public String isIntersection(Optional<List<Point>> intersectionPoints) {
+
+        if(!intersectionPoints.isEmpty()){
+            return ValidationResult.INTERSECTION.getValue();
+        }
+
+        return ValidationResult.NO_INTERSECTION.getValue();
+    }
+
+    public Optional<List<Point>> getInterceptionPoints(Rectangle rectangle1, Rectangle rectangle2){
         List<Point> interceptionPoints = new ArrayList<>();
 
-        for (Line lineV : breakRectangleVertical(r1)){
-            for(Line lineH : breakRectangleHorizontal(r2)){
+        for (Line lineV : breakRectangleVertical(rectangle1)){
+            for(Line lineH : breakRectangleHorizontal(rectangle2)){
                 if(isLineInterception(lineH, lineV)){
                     interceptionPoints.add(new Point(lineV.getStartPoint().getX(), lineH.getStartPoint().getY()));
                 }
             }
         }
 
-        for (Line lineV : breakRectangleVertical(r2)){
-            for(Line lineH : breakRectangleHorizontal(r1)){
+        for (Line lineV : breakRectangleVertical(rectangle2)){
+            for(Line lineH : breakRectangleHorizontal(rectangle1)){
                 if(isLineInterception(lineH, lineV)){
                     interceptionPoints.add(new Point(lineV.getStartPoint().getX(), lineH.getStartPoint().getY()));
                 }

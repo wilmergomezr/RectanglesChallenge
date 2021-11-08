@@ -2,18 +2,34 @@ package org.rectangles.ui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-public class MainWindow extends JWindow {
+public class MainWindow extends JFrame {
 
     private CanvasDraw drawPanel;
 
     public MainWindow(){
-        this.setSize(600, 600);
-        this.setLayout(new GridLayout(2, 3));
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            }
+        });
 
-        drawPanel = new CanvasDraw();
+        this.setSize(500, 800);
+        this.setLayout(new BorderLayout(3,3));
 
-        this.getContentPane().add(drawPanel);
+
+        TextArea area = new TextArea();
+        area.setSize(500, 300);
+        area.setText("Validations");
+        drawPanel = new CanvasDraw(area);
+
+
+        this.getContentPane().add(drawPanel, BorderLayout.NORTH);
+        this.getContentPane().add(area, BorderLayout.SOUTH);
 
         this.setVisible(true);
     }

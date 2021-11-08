@@ -21,6 +21,7 @@ public class CanvasDraw extends JPanel {
     private Rectangle recA;
     private Rectangle recB;
     private List<Point> drawPoints;
+    private TextArea results;
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -47,32 +48,27 @@ public class CanvasDraw extends JPanel {
         }
     }
 
-    public CanvasDraw(){
+    public CanvasDraw(TextArea results){
+        this.results = results;
         this.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                registerClick(e);
+
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-
+                registerClick(e);
             }
 
             @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
+            public void mouseReleased(MouseEvent e) {            }
 
             @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
+            public void mouseEntered(MouseEvent e) {            }
 
             @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
+            public void mouseExited(MouseEvent e) {            }
         });
     }
 
@@ -94,28 +90,18 @@ public class CanvasDraw extends JPanel {
                 endPoint.getX() - startPoint.getX(), endPoint.getY() - startPoint.getY());
 
         temp = validateAndFix(temp);
-        Optional<List<Point>> points = Optional.empty();
 
         if(recA == null){
             recA = temp;
         } else if(recB == null){
             recB = temp;
-            points = (new RectangleIntersection()).getInterceptionPoints(recA, recB);
-            System.out.println("Containment Validation Result: " + (new RectangleContainment()).validate(recA, recB));
-            System.out.println("Adjacency Validation Result: " + (new RectangleAdjacency()).validate(recA, recB));
+            updateResults(recA, recB);
         } else {
             recA = recB;
             recB = temp;
-            points = (new RectangleIntersection()).getInterceptionPoints(recA, recB);
-            System.out.println("Containment Validation Result: " + (new RectangleContainment()).validate(recA, recB));
-            System.out.println("Adjacency Validation Result: " + (new RectangleAdjacency()).validate(recA, recB));
+            updateResults(recA, recB);
         }
 
-        if(!points.isEmpty()) {
-            drawPoints = points.get();
-        }else{
-            drawPoints = null;
-        }
     }
 
     private Rectangle validateAndFix(Rectangle r){
@@ -128,5 +114,25 @@ public class CanvasDraw extends JPanel {
             r.setWidth( r.getWidth() * -1 );
         }
         return r;
+    }
+
+    private void updateResults(Rectangle recA, Rectangle recB){
+        RectangleIntersection intersection = new RectangleIntersection();
+
+        Optional<List<Point>> points =  intersection.getInterceptionPoints(recA, recB);
+        results.setText("Intersection Validation Result: " + intersection.isIntersection(points) + "\n");
+        if(!points.isEmpty()) {
+            for (Point p : points.get()){
+                results.setText(results.getText() + "Intersection point "+ p.toString() + "\n");
+            }
+        }
+        results.setText(results.getText() + "\n" + "Containment Validation Result: " + (new RectangleContainment()).validate(recA, recB) + "\n");
+        results.setText(results.getText() + "Adjacency Validation Result: " + (new RectangleAdjacency()).validate(recA, recB) + "\n");
+
+        if(!points.isEmpty()) {
+            drawPoints = points.get();
+        }else{
+            drawPoints = null;
+        }
     }
 }
