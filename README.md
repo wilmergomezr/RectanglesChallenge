@@ -91,7 +91,8 @@ Part of this validation is
     for (Line lineV : breakRectangleVertical(rectangle1)){
         for(Line lineH : breakRectangleHorizontal(rectangle2)){
             if(isLineInterception(lineH, lineV)){
-                interceptionPoints.add(new Point(lineV.getStartPoint().getX(), lineH.getStartPoint().getY()));
+                interceptionPoints.add(new Point(lineV.getStartPoint().getX(), 
+                lineH.getStartPoint().getY()));
             }
         }
     }
