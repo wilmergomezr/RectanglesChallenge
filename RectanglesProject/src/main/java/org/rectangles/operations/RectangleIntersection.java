@@ -1,6 +1,7 @@
 package org.rectangles.operations;
 
 import org.rectangles.entities.Line;
+import org.rectangles.entities.Point;
 import org.rectangles.entities.Rectangle;
 import org.rectangles.utils.ValidationResult;
 
@@ -13,46 +14,43 @@ public class RectangleIntersection extends RectangleValidationAlgorithm{
     @Override
     public String validate(Rectangle a, Rectangle b) {
 
-        List<Line> lines = breakRectangle(b);
-        if(!getInterceptedLines(a, b, true).isEmpty()){
+        if(!getInterceptionPoints(a, b).isEmpty()){
             return ValidationResult.INTERSECTION.getValue();
         }
 
         return ValidationResult.NO_INTERSECTION.getValue();
     }
 
-    public Optional<List<Line>> getInterceptedLines(Rectangle r1, Rectangle r2, boolean breakOnFirst){
-        List<Line> interceptedLines =  new ArrayList<>();
+    public Optional<List<Point>> getInterceptionPoints(Rectangle r1, Rectangle r2){
+        List<Point> interceptionPoints = new ArrayList<>();
 
-        for(Line line : breakRectangle(r2)){
-            if(isLineInterception(r1, line)){
-                interceptedLines.add(line);
-                System.out.println("Intersection: " + line.toString());
-                if(breakOnFirst){
-                    return Optional.of(interceptedLines);
+        for (Line lineV : breakRectangleVertical(r1)){
+            for(Line lineH : breakRectangleHorizontal(r2)){
+                if(isLineInterception(lineH, lineV)){
+                    interceptionPoints.add(new Point(lineV.getStartPoint().getX(), lineH.getStartPoint().getY()));
                 }
             }
         }
-        for(Line line : breakRectangle(r1)){
-            if(isLineInterception(r2, line)){
-                interceptedLines.add(line);
-                System.out.println("Intersection: " + line.toString());
-                if(breakOnFirst){
-                    return Optional.of(interceptedLines);
+
+        for (Line lineV : breakRectangleVertical(r2)){
+            for(Line lineH : breakRectangleHorizontal(r1)){
+                if(isLineInterception(lineH, lineV)){
+                    interceptionPoints.add(new Point(lineV.getStartPoint().getX(), lineH.getStartPoint().getY()));
                 }
             }
         }
-        if(!interceptedLines.isEmpty()){
-            return Optional.of(interceptedLines);
+
+        if(!interceptionPoints.isEmpty()){
+            System.out.println("Total points: " + interceptionPoints.size());
+            return Optional.of(interceptionPoints);
         }
+
         return Optional.empty();
     }
 
-    public boolean isLineInterception(Rectangle r, Line line){
-
-        return isPointInside(r, line.getStartPoint()) ^ isPointInside(r, line.getEndPoint());
-
+    public boolean isLineInterception(Line H, Line V){
+        return H.getStartPoint().getY() > V.getStartPoint().getY() && H.getStartPoint().getY() < V.getEndPoint().getY() &&
+                V.getStartPoint().getX() > H.getStartPoint().getX() && V.getStartPoint().getX() < H.getEndPoint().getX();
     }
-
 
 }

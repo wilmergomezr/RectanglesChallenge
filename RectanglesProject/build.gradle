@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'jacoco'
 }
 
 group 'org.rectangles'
@@ -13,4 +14,31 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+test {
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it,
+                    exclude: ['org/rectangles/entities/**',
+                              'org/rectangles/ui/**'
+                    ]
+            )
+        }))
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.6"
+    //reportsDirectory = file("$buildDir/customJacocoReportDir")
 }
