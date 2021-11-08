@@ -143,20 +143,21 @@ I implemented two ways of using this application, the command line and a GUI for
 
 On this GUI you are able to draw rectangles, with your first click you define the start point of the rectangle, on the screen you will see a red dot representing this.
 
-![First Click](firstClick.png)
+![First Click](files/firstClick.png)
 
 The next click will define the width and height of the rectangle, and it'll be drawn on the screen.
 
-
+![Second Click](files/secondClick.png)
 
 There will only be two rectangles on the screen at the same time, so the last to rectangles drawn will remain, and any older than those will be removed.
 when a second rectangle is drawn, all the validations are executed and the results gets showed on the screen
 
-
+![Two Rectangles](files/twoRectangles.png)
+![Validations](files/twoRectangles2.png)
 
 For the intersections there is and extra visual indication, were we will be able to see the intersection points as blue dots.
 
- 
+![Validations](files/Intersection.png) 
 
 ## Testing
 ### Unit Tests
@@ -171,3 +172,5 @@ the excluded packages were:
 ### Coverage
 
 I added jacoco to validate the test coverage, in this case I get 100% of test coverage and 96% on the branches, as shown in the screenshot below.
+
+![Coverage](files/jacoco.png)
