@@ -6,7 +6,7 @@ E-Mail: wilmer.gomezr@gmail.com
 
 ## Problem Description
 
-![Problem](files/RectanglesProgrammingSample.pdf)
+![Problem](RectanglesProgrammingSample.pdf)
 
 Is required to create 3 algorithm that let us evaluate rectangles. The three validations required are intersection, containment and adjacency.
 
@@ -143,7 +143,7 @@ I implemented two ways of using this application, the command line and a GUI for
 
 On this GUI you are able to draw rectangles, with your first click you define the start point of the rectangle, on the screen you will see a red dot representing this.
 
-
+![First Click](firstClick.png)
 
 The next click will define the width and height of the rectangle, and it'll be drawn on the screen.
 
