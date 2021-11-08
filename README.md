@@ -135,9 +135,15 @@ This is the method with the validations for each type of adjacency
 
 I implemented two ways of using this application, the command line and a GUI for an easiest way of testing and validate.
 
-### Command Line
+###Build
 
+First into the RectanglesChallenge\RectanglesProject directory an run the next command
 
+     gradle clean build
+     
+After successfully build the project, run the Application task with gradle
+
+     gradle run
 
 ### GUI
 
